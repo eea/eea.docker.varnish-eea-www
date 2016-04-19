@@ -202,7 +202,7 @@ sub vcl_synth {
     set resp.http.Content-Type = "text/html; charset=utf-8";
 
     if ( resp.status >= 500 && resp.status <= 505) {
-        set resp.http.error50x = std.fileread("/var/lib/varnish/static/500msg.html");
+        set resp.http.error50x = std.fileread("/etc/varnish/500msg.html");
         synthetic(resp.http.error50x);
     } else {
         synthetic({"
