@@ -1,6 +1,7 @@
-FROM eeacms/varnish:3
+FROM eeacms/varnish
 MAINTAINER "European Environment Agency (EEA): IDM2 A-Team" <eea-edw-a-team-alerts@googlegroups.com>
 
-RUN mkdir -p /var/static /etc/varnish/conf.d \
- && curl -o /etc/varnish/conf.d/staging.vcl -SL https://svn.eionet.europa.eu/repositories/Zope/trunk/www.eea.europa.eu/trunk/etc/varnish/default-staging.vcl \
- && curl -o /var/static/500msg.html -SL https://svn.eionet.europa.eu/repositories/Zope/trunk/www.eea.europa.eu/trunk/static/500msg.html
+USER root
+COPY 500msg.html /etc/varnish/500msg.html
+COPY varnish.vcl /etc/varnish/conf.d/varnish.vcl
+USER varnish
