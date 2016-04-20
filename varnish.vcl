@@ -141,15 +141,13 @@ sub vcl_backend_response {
     set beresp.http.X-Backend-IP = beresp.backend.ip;
 
 
-    # TODO
     # SAINT mode
     # if we get error 500 jump to the next backend
 
-    # if (req.method == "GET" && (!beresp.backend.name ~ "auth") && (beresp.status == 500 || beresp.status == 503 || beresp.status == 504)) {
-    #     set beresp.saintmode = 10s;
-    #     return (retry);
-    # }
-
+    if ((!beresp.backend.name ~ "auth") && (beresp.status == 500 || beresp.status == 503 || beresp.status == 504)) {
+         saintmode.blacklist(10s);
+         return (retry);
+    }
 
     set beresp.grace = 30m;
 
@@ -165,11 +163,10 @@ sub vcl_backend_response {
         set beresp.http.Access-Control-Allow-Origin = "*";
     }
 
-    # TODO
-    #intecept 5xx errors here. Better reliability than in Apache
-    #if ( beresp.status >= 500 && beresp.status <= 505) {
-    #    return (synth(beresp.status, beresp.reason));
-    #}
+    # intecept 5xx errors here. Better reliability than in Apache
+    if ( beresp.status >= 500 && beresp.status <= 505) {
+        return (abandon);
+    }
 }
 
 sub vcl_deliver {
@@ -194,6 +191,14 @@ sub vcl_deliver {
     unset resp.http.error50x;
 }
 
+sub vcl_backend_error {
+  if ( beresp.status >= 500 && beresp.status <= 505) {
+    synthetic(std.fileread("/etc/varnish/500msg.html"));
+  }
+
+  return (deliver);
+}
+
 sub vcl_synth {
     if (resp.status == 503 && resp.http.X-Backend ~ "auth" && req.method == "GET" && req.restarts < 2) {
       return (restart);
@@ -202,8 +207,7 @@ sub vcl_synth {
     set resp.http.Content-Type = "text/html; charset=utf-8";
 
     if ( resp.status >= 500 && resp.status <= 505) {
-        set resp.http.error50x = std.fileread("/etc/varnish/500msg.html");
-        synthetic(resp.http.error50x);
+        synthetic(std.fileread("/etc/varnish/500msg.html"));
     } else {
         synthetic({"
         <?xml version="1.0" encoding="utf-8"?>
