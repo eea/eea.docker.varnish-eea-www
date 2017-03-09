@@ -140,15 +140,6 @@ sub vcl_backend_response {
     set beresp.http.X-Backend-Name = beresp.backend.name;
     set beresp.http.X-Backend-IP = beresp.backend.ip;
 
-
-    # SAINT mode
-    # if we get error 500 jump to the next backend
-
-    if ((!beresp.backend.name ~ "auth") && (beresp.status == 500 || beresp.status == 503 || beresp.status == 504)) {
-         saintmode.blacklist(10s);
-         return (retry);
-    }
-
     set beresp.grace = 30m;
 
     # cache all XML and RDF objects for 1 day
