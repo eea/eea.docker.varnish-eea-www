@@ -3,6 +3,8 @@ acl purge {
     "127.0.0.1";
     "172.17.0.0/16"; # Docker network
     "10.42.0.0/16";  # Rancher network
+    "192.168.1.0/24" # Internal networks
+    "192.168.2.0/24" # Internal networks
 }
 
 sub vcl_recv {
