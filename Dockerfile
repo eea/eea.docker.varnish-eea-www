@@ -1,4 +1,4 @@
-FROM eeacms/varnish:4.1-3.0
+FROM eeacms/varnish:4.1-3.1
 LABEL maintainer="European Environment Agency (EEA): IDM2 A-Team <eea-edw-a-team-alerts@googlegroups.com>"
 
 ENV CACHE_SIZE="12G" \
@@ -7,5 +7,4 @@ ENV CACHE_SIZE="12G" \
     BACKENDS_PORT="8080" \
     BACKENDS_PROBE_ENABLED="false"
 
-COPY 500msg.html /etc/varnish/
 COPY varnish.vcl /etc/varnish/conf.d/
