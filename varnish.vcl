@@ -187,8 +187,7 @@ sub vcl_deliver {
 sub vcl_backend_error {
   if ( beresp.status >= 500 && beresp.status <= 505) {
     # synthetic(std.fileread("/etc/varnish/500msg.html"));
-    synthetic({"
-        <?xml version="1.0" encoding="utf-8"?>
+    synthetic({"<?xml version="1.0" encoding="utf-8"?>
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
@@ -387,8 +386,7 @@ sub vcl_synth {
 
     if ( resp.status >= 500 && resp.status <= 505) {
         # synthetic(std.fileread("/etc/varnish/500msg.html"));
-        synthetic({"
-            <?xml version="1.0" encoding="utf-8"?>
+        synthetic({"<?xml version="1.0" encoding="utf-8"?>
             <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
@@ -567,8 +565,7 @@ sub vcl_synth {
             </body></html>
         "});
     } else {
-        synthetic({"
-        <?xml version="1.0" encoding="utf-8"?>
+        synthetic({"<?xml version="1.0" encoding="utf-8"?>
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
         <html>
