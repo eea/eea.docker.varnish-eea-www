@@ -383,15 +383,7 @@ sub vcl_synth {
               margin: 0;
               border: 0;
               overflow: auto;
-
-              background: #a7ba41 repeat-x;
-              background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #a7ba41), color-stop(100%, #848d28));
-              background-image: -webkit-linear-gradient(#a7ba41, #848d28);
-              background-image: -moz-linear-gradient(#a7ba41, #848d28);
-              background-image: -o-linear-gradient(#a7ba41, #848d28);
-              background-image: linear-gradient(#a7ba41, #848d28);
-              background: -ms-linear-gradient(top,  #a7ba41 0%,#848d28 100%);
-              filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7ba41', endColorstr='#848d28',GradientType=0 );
+              background-color: #006699;
 
               color: #fff;
               font-family: Arial,sans-serif;
@@ -512,13 +504,8 @@ sub vcl_synth {
                 <p><strong>European Environment Agency (EEA)</strong> <a href="http://www.eea.europa.eu/">www.eea.europa.eu</a></p>
                 <hr>
                 <h2 style="margin: 12px 0;">Our apologies our website is too popular right now...</h2>
-                <div style="line-height: 28px;">
-                  <button onclick="window.history.back()">Go Back</button><br>
-                  or<br>
-                  Try Refreshing the Page
-                </div>
                 <hr>
-                <p style="font-style: italic;">If this problem persists <a href="http://www.eea.europa.eu/help/contact-info">Contact EEA Web Team</a></p>
+                <p style="font-style: italic;">If this problem persists Contact EEA Web Team (web.helpdesk at eea.europa.eu)</p>
                 <p style="font-size: 90%"><a href="http://www.eea.europa.eu/">European Environment Agency</a>, Kongens Nytorv 6, 1050 Copenhagen K, Denmark - Phone: +45 3336 7100</p>  <br>
                 </p>
               </div>
