@@ -1,6 +1,10 @@
 pipeline {
   agent any
 
+  environment {
+    GIT_NAME = "eea.docker.varnish-eea-www"
+  }
+
   stages {
     stage('Build & Test') {
       steps {
@@ -12,13 +16,30 @@ pipeline {
               sh '''docker run -i --name=${BUILD_TAG} --add-host=anon:10.0.0.1 --add-host=auth:10.0.0.2 --add-host=download:10.0.0.3 ${BUILD_TAG} sh -c "/docker-setup.sh && varnishd -C -f /etc/varnish/default.vcl"'''
             } finally {
               sh '''docker rm -v ${BUILD_TAG}'''
-              sh '''docker rmi ${BUILD_TAG}'''
+              sh '''docker rmi ${BUILD_TAG}"
             }
           }
         }
 
       }
     }
+
+    stage('Release') {
+      when {
+        allOf {
+          environment name: 'CHANGE_ID', value: ''
+          branch 'master'
+        }
+      }
+      steps {
+        node(label: 'docker-1.13') {
+          withCredentials([string(credentialsId: 'eea-jenkins-token', variable: 'GITHUB_TOKEN')]) {
+            sh '''docker run -i --rm --name="$BUILD_TAG-release" -e GIT_BRANCH="$BRANCH_NAME" -e GIT_NAME="$GIT_NAME" -e GIT_TOKEN="$GITHUB_TOKEN" eeacms/gitflow'''
+          }
+        }
+      }
+    }
+
   }
 
   post {
