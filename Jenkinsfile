@@ -16,7 +16,7 @@ pipeline {
               sh '''docker run -i --name=${BUILD_TAG} --add-host=anon:10.0.0.1 --add-host=auth:10.0.0.2 --add-host=download:10.0.0.3 ${BUILD_TAG} sh -c "/docker-setup.sh && varnishd -C -f /etc/varnish/default.vcl"'''
             } finally {
               sh '''docker rm -v ${BUILD_TAG}'''
-              sh '''docker rmi ${BUILD_TAG}"
+              sh '''docker rmi ${BUILD_TAG}'''
             }
           }
         }
