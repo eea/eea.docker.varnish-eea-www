@@ -1,4 +1,4 @@
-FROM eeacms/varnish:4.1-3.1
+FROM eeacms/varnish:4.1-4.0
 LABEL maintainer="European Environment Agency (EEA): IDM2 A-Team <eea-edw-a-team-alerts@googlegroups.com>"
 
 ENV CACHE_SIZE="12G" \
