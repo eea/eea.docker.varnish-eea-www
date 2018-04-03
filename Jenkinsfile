@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Build & Test') {
       steps {
-        node(label: 'docker-1.13') {
+        node(label: 'clair') {
           script {
             try {
               checkout scm
