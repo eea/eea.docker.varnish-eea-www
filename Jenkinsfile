@@ -13,6 +13,7 @@ pipeline {
             try {
               checkout scm
               sh '''docker build -t ${BUILD_TAG} .'''
+              sh "TMPDIR=`pwd` clair-scanner --ip=`hostname` --clair=https://clair.eea.europa.eu -t=Critical ${BUILD_TAG}"
               sh '''docker run -i --name=${BUILD_TAG} --add-host=anon:10.0.0.1 --add-host=auth:10.0.0.2 --add-host=download:10.0.0.3 ${BUILD_TAG} sh -c "varnishd -C -f /etc/varnish/default.vcl"'''
             } finally {
               sh '''docker rm -v ${BUILD_TAG}'''
