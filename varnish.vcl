@@ -20,6 +20,8 @@ sub vcl_recv {
             set req.http.Accept-Encoding = "gzip";
         } else if (req.http.Accept-Encoding ~ "deflate") {
             set req.http.Accept-Encoding = "deflate";
+        } else if (req.http.Accept-Encoding ~ "br") {
+            set req.http.Accept-Encoding = "br";
         } else {
             # unknown algorithm
             unset req.http.Accept-Encoding;
