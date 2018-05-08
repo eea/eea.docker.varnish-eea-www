@@ -12,12 +12,12 @@ pipeline {
           script {
             try {
               checkout scm
-              sh '''docker build -t ${BUILD_TAG} .'''
-              sh '''TMPDIR=`pwd` clair-scanner --ip=`hostname` --clair=https://clair.eea.europa.eu -t=Critical ${BUILD_TAG}'''
-              sh '''docker run -i --name=${BUILD_TAG} --add-host=anon:10.0.0.1 --add-host=auth:10.0.0.2 --add-host=download:10.0.0.3 ${BUILD_TAG} sh -c "varnishd -C -f /etc/varnish/default.vcl"'''
+              sh '''docker build -t ${BUILD_TAG,,} .'''
+              sh '''TMPDIR=`pwd` clair-scanner --ip=`hostname` --clair=http://clair:6060 -t=Critical ${BUILD_TAG,,}'''
+              sh '''docker run -i --name=${BUILD_TAG,,} --add-host=anon:10.0.0.1 --add-host=auth:10.0.0.2 --add-host=download:10.0.0.3 ${BUILD_TAG,,} sh -c "varnishd -C -f /etc/varnish/default.vcl"'''
             } finally {
-              sh '''docker rm -v ${BUILD_TAG}'''
-              sh '''docker rmi ${BUILD_TAG}'''
+              sh '''docker rm -v ${BUILD_TAG,,}'''
+              sh '''docker rmi ${BUILD_TAG,,}'''
             }
           }
         }
@@ -37,7 +37,7 @@ pipeline {
           withCredentials([string(credentialsId: 'eea-jenkins-token', variable: 'GITHUB_TOKEN')]) {
             sh '''/scan_catalog_entry.sh templates/www-frontend eeacms/varnish-eea-www'''
             sh '''/scan_catalog_entry.sh templates/www-eea eeacms/varnish-eea-www'''
-            sh '''docker run -i --rm --name="$BUILD_TAG-release" -e GIT_BRANCH="$BRANCH_NAME" -e GIT_NAME="$GIT_NAME" -e GIT_TOKEN="$GITHUB_TOKEN" eeacms/gitflow'''
+            sh '''docker run -i --rm --name="${BUILD_TAG,,}-release" -e GIT_BRANCH="$BRANCH_NAME" -e GIT_NAME="$GIT_NAME" -e GIT_TOKEN="$GITHUB_TOKEN" eeacms/gitflow'''
           }
         }
       }
