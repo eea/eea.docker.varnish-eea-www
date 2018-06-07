@@ -90,8 +90,8 @@ sub vcl_recv {
             }
 
             # replace normal purge with ban-lurker way - may not work
-            # ban ("req.url == " + req.url);
-            ban ("obj.http.x-url ~ " + req.url);
+            # Cleanup double slashes: '//' -> '/' - refs #95891
+            ban ("obj.http.x-url == " + regsub(req.url, "\/\/", "/"));
             return (synth(200, "Ban added. URL will be purged by lurker"));
         }
 
@@ -136,7 +136,8 @@ sub vcl_pipe {
 
 sub vcl_backend_response {
     # needed for ban-lurker
-    set beresp.http.x-url = bereq.url;
+    # Cleanup double slashes: '//' -> '/' - refs #95891
+    set beresp.http.x-url = regsub(bereq.url, "\/\/", "/");
 
     # Varnish determined the object was not cacheable
     if (!(beresp.ttl > 0s)) {
