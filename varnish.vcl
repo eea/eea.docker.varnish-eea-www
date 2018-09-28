@@ -156,9 +156,8 @@ sub vcl_backend_response {
         set beresp.http.X-Varnish-Header-Set-Id = "cache-in-proxy-24-hours";
     }
 
-    # add Access-Control-Allow-Origin header for webfonts and truetype fonts
+    # Headers for webfonts and truetype fonts
     if (beresp.http.Content-Type ~ "(application\/vnd.ms-fontobject|font\/truetype|application\/font-woff|application\/x-font-woff)") {
-        set beresp.http.Access-Control-Allow-Origin = "*";
         # fix for loading Font Awesome under IE11 on Win7, see #94853
         if (bereq.http.User-Agent ~ "Trident" || bereq.http.User-Agent ~ "Windows NT 6.1") {
             unset beresp.http.Vary;
