@@ -121,7 +121,7 @@ sub vcl_recv {
     }
 
     ## for some urls or request we can do a pass here (no caching)
-    if (req.method == "GET" && (req.url ~ "aq_parent" || req.url ~ "manage$" || req.url ~ "manage_workspace$" || req.url ~ "manage_main$")) {
+    if (req.method == "GET" && (req.url ~ "aq_parent" || req.url ~ "manage$" || req.url ~ "manage_workspace$" || req.url ~ "manage_main$" || req.url ~ "@@rdf")) {
         return(pass);
     }
 
