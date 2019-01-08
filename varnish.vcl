@@ -340,6 +340,7 @@ sub vcl_backend_error {
         <script type="text/javascript">
           document.getElementById("focus").focus();
         </script>
+        <!-- Matomo -->
         <script type="text/javascript">
           var _paq = _paq || [];
           /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
@@ -356,6 +357,8 @@ sub vcl_backend_error {
             g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
           })();
         </script>
+        <noscript><p><img src="https://matomo.eea.europa.eu/piwik.php?idsite=3&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+        <!-- End Matomo Code -->
         </body></html>
     "});
   }
@@ -525,6 +528,7 @@ sub vcl_synth {
             <script type="text/javascript">
               document.getElementById("focus").focus();
             </script>
+            <!-- Matomo -->
             <script type="text/javascript">
               var _paq = _paq || [];
               /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
@@ -541,6 +545,8 @@ sub vcl_synth {
                 g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
               })();
             </script>
+            <noscript><p><img src="https://matomo.eea.europa.eu/piwik.php?idsite=3&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+            <!-- End Matomo Code -->
             </body></html>
         "});
     } else {
