@@ -35,8 +35,8 @@ pipeline {
       steps {
         node(label: 'clair') {
           withCredentials([string(credentialsId: 'eea-jenkins-token', variable: 'GITHUB_TOKEN'),usernamePassword(credentialsId: 'jekinsdockerhub', usernameVariable: 'DOCKERHUB_USER', passwordVariable: 'DOCKERHUB_PASS')]) {
-            sh '''/scan_catalog_entry.sh templates/www-frontend eeacms/varnish-eea-www'''
-            sh '''/scan_catalog_entry.sh templates/www-eea eeacms/varnish-eea-www'''
+            // sh '''/scan_catalog_entry.sh templates/www-frontend eeacms/varnish-eea-www'''
+            // sh '''/scan_catalog_entry.sh templates/www-eea eeacms/varnish-eea-www'''
             sh '''docker run -i --rm --name="${BUILD_TAG,,}-release" -e GIT_BRANCH="$BRANCH_NAME" -e GIT_NAME="$GIT_NAME" -e GIT_TOKEN="$GITHUB_TOKEN" -e DOCKERHUB_USER="$DOCKERHUB_USER" -e DOCKERHUB_PASS="$DOCKERHUB_PASS"  eeacms/gitflow'''
           }
         }
