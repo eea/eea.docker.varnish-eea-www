@@ -328,7 +328,7 @@ sub vcl_backend_error {
           <div style="text-align: center;">
             <p><strong>European Environment Agency (EEA)</strong> <a href="http://www.eea.europa.eu/">www.eea.europa.eu</a></p>
             <hr>
-            <h2 style="margin: 12px 0;">Our apologies our website is too popular right now...</h2>
+            <h2 style="margin: 12px 0;">Our apologies, our website is not available at the moment.</h2>
             <hr>
             <p style="font-style: italic;">If this problem persists Contact EEA Web Team (web.helpdesk at eea.europa.eu)</p>
             <p style="font-size: 90%"><a href="http://www.eea.europa.eu/">European Environment Agency</a>, Kongens Nytorv 6, 1050 Copenhagen K, Denmark - Phone: +45 3336 7100</p>  <br>
@@ -516,7 +516,7 @@ sub vcl_synth {
               <div style="text-align: center;">
                 <p><strong>European Environment Agency (EEA)</strong> <a href="http://www.eea.europa.eu/">www.eea.europa.eu</a></p>
                 <hr>
-                <h2 style="margin: 12px 0;">Our apologies our website is too popular right now...</h2>
+                <h2 style="margin: 12px 0;">Our apologies, our website is not available at the moment.</h2>
                 <hr>
                 <p style="font-style: italic;">If this problem persists Contact EEA Web Team (web.helpdesk at eea.europa.eu)</p>
                 <p style="font-size: 90%"><a href="http://www.eea.europa.eu/">European Environment Agency</a>, Kongens Nytorv 6, 1050 Copenhagen K, Denmark - Phone: +45 3336 7100</p>  <br>
