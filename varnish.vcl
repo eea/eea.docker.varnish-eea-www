@@ -43,8 +43,19 @@ sub vcl_recv {
         }
     }
 
-    # cache authenticated requests by adding header
     set req.http.X-Username = "Anonymous";
+
+    # Do not cache RestAPI authenticated requests
+    if (req.http.Authorization || req.http.Authenticate) {
+        set req.http.X-Username = "Authenticated (RestAPI)";
+        set req.backend_hint = cluster_auth.backend();
+
+        # pass (no caching)
+        unset req.http.If-Modified-Since;
+        return(pass);
+    }
+
+    # Do not cache authenticated requests
     if (req.http.Cookie && req.http.Cookie ~ "__ac(|_(name|password|persistent))=")
     {
         set req.http.X-Username = regsub( req.http.Cookie, "^.*?__ac=([^;]*);*.*$", "\1" );
