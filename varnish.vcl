@@ -35,8 +35,27 @@ sub vcl_recv {
         set req.http.X-Forwarded-Proto = "http";
     }
 
-    # cache authenticated requests by adding header
+    if (req.http.Accept) {
+        if (req.http.Accept ~ "application/json") {
+            set req.http.Accept = "application/json";
+        } else {
+            set req.http.Accept = "text/html";
+        }
+    }
+
     set req.http.X-Username = "Anonymous";
+
+    # Do not cache RestAPI authenticated requests
+    if (req.http.Authorization || req.http.Authenticate) {
+        set req.http.X-Username = "Authenticated (RestAPI)";
+        set req.backend_hint = cluster_auth.backend();
+
+        # pass (no caching)
+        unset req.http.If-Modified-Since;
+        return(pass);
+    }
+
+    # Do not cache authenticated requests
     if (req.http.Cookie && req.http.Cookie ~ "__ac(|_(name|password|persistent))=")
     {
         set req.http.X-Username = regsub( req.http.Cookie, "^.*?__ac=([^;]*);*.*$", "\1" );
@@ -148,6 +167,12 @@ sub vcl_backend_response {
     set beresp.http.X-Backend-IP = beresp.backend.ip;
 
     set beresp.grace = 30m;
+
+    if (!beresp.http.Vary) { # no Vary at all
+        set beresp.http.Vary = "Accept";
+    } elseif (beresp.http.Vary !~ "Accept") { # add to existing Vary
+        set beresp.http.Vary = beresp.http.Vary + ", Accept";
+    }
 
     # cache all XML and RDF objects for 1 day
     if (beresp.http.Content-Type ~ "(text\/xml|application\/xml|application\/atom\+xml|application\/rss\+xml|application\/rdf\+xml)") {
