@@ -35,14 +35,6 @@ sub vcl_recv {
         set req.http.X-Forwarded-Proto = "http";
     }
 
-    if (req.http.Accept) {
-        if (req.http.Accept ~ "application/json") {
-            set req.http.Accept = "application/json";
-        } else {
-            set req.http.Accept = "text/html";
-        }
-    }
-
     set req.http.X-Username = "Anonymous";
 
     # Do not cache RestAPI authenticated requests
