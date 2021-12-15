@@ -11,6 +11,14 @@ acl purge {
 
 sub vcl_recv {
 
+    #Ref #142770
+    if (req.url ~ "api//SITE/ims") {
+        if (! req.http.Accept ~ "json") {
+           set req.url = regsub(req.url, "/VirtualHostBase/https/staging.eea.europa.eu:443/www/VirtualHostRoot/_vh_api//SITE", "");
+           return (synth(301, req.url));
+        }
+    }
+
     # Before anything else we need to fix gzip compression
     if (req.http.Accept-Encoding) {
         if (req.url ~ "\.(jpg|png|gif|gz|tgz|bz2|tbz|mp3|ogg)$") {
@@ -384,6 +392,13 @@ sub vcl_backend_error {
 }
 
 sub vcl_synth {
+
+    if (resp.status == 301) {
+        set resp.http.location = resp.reason;
+        set resp.reason = "Moved";
+        return (deliver);
+    }
+
     if (resp.status == 503 && resp.http.X-Backend ~ "auth" && req.method == "GET" && req.restarts < 2) {
       return (restart);
     }
