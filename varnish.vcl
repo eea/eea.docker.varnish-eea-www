@@ -12,7 +12,7 @@ acl purge {
 sub vcl_recv {
 
     #Ref #142770
-    if (req.url ~ "api//SITE/ims") {
+    if (req.url ~ "api//SITE") {
         if (! req.http.Accept ~ "json") {
            set req.url = regsub(req.url, "(.*)/_vh_api//SITE", "");
            return (synth(301, req.url));
@@ -395,6 +395,7 @@ sub vcl_synth {
 
     if (resp.status == 301) {
         set resp.http.location = resp.reason;
+        set resp.http.Cache-Control = "no-store";
         set resp.reason = "Moved";
         return (deliver);
     }
