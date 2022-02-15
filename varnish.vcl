@@ -45,6 +45,16 @@ sub vcl_recv {
 
     set req.http.X-Username = "Anonymous";
 
+    # Do not cache image_view_fullscreen due to Plone hotfix 20220128
+    if (req.url ~ "image_view_fullscreen$")
+    {
+        set req.backend_hint = cluster_anon.backend();
+
+        # pass (no caching)
+        unset req.http.If-Modified-Since;
+        return(pass);
+    }
+
     # Do not cache RestAPI authenticated requests
     if (req.http.Authorization || req.http.Authenticate) {
         set req.http.X-Username = "Authenticated (RestAPI)";
