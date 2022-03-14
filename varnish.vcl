@@ -184,12 +184,13 @@ sub vcl_backend_response {
         set beresp.http.Vary = beresp.http.Vary + ", Accept";
     }
 
-    # cache all XML and RDF objects for 1 day
-    if (beresp.http.Content-Type ~ "(text\/xml|application\/xml|application\/atom\+xml|application\/rss\+xml|application\/rdf\+xml)") {
-        set beresp.ttl = 1d;
-        set beresp.http.X-Varnish-Caching-Rule-Id = "xml-rdf-files";
-        set beresp.http.X-Varnish-Header-Set-Id = "cache-in-proxy-24-hours";
-    }
+    # Cache all XML and RDF objects for 1 day
+    # removed due to #147431
+    #if (beresp.http.Content-Type ~ "(text\/xml|application\/xml|application\/atom\+xml|application\/rss\+xml|application\/rdf\+xml)") {
+    #    set beresp.ttl = 1d;
+    #    set beresp.http.X-Varnish-Caching-Rule-Id = "xml-rdf-files";
+    #    set beresp.http.X-Varnish-Header-Set-Id = "cache-in-proxy-24-hours";
+    #}
 
     # Headers for webfonts and truetype fonts
     if (beresp.http.Content-Type ~ "(application\/vnd.ms-fontobject|font\/truetype|application\/font-woff|application\/x-font-woff)") {
